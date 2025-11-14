@@ -59,13 +59,13 @@ jupyter notebook Genomic_Text_Curation_NLP.ipynb
 ```
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 genomic-nlp-curation/
 │
 ├── data/
-│   └── texts.csv                          # Input: 70 genomic abstracts
+│   └── texts.csv                          
 │
 ├── outputs/
 │   ├── section2_hybrid_schema.json        # Extracted entities per document
@@ -76,14 +76,13 @@ genomic-nlp-curation/
 │   └── section4_cluster_summary.json      # Human-readable cluster descriptions
 │
 ├── figures/
-│   ├── umap_clusters.png                  # 2D topic visualization
-│   ├── cluster_distribution.png           # Cluster size bar chart
-│   └── entity_heatmap.png                 # Entity counts per cluster
+│   ├── umap_clusters.png                  
+│   ├── cluster_distribution.png           
+│   └── entity_heatmap.png                 
 │
-├── Genomic_Text_Curation_NLP.ipynb        # Main notebook
-├── main.py                                # Standalone script version
-├── requirements.txt                       # Python dependencies
-└── README.md                              # This file
+├── genomic_text_curation_&_topic_grouping_yuhsuanhuang.ipynb       
+├── genomic_text_curation_&_topic_grouping_yuhsuanhuang.py                                                  
+└── README.md                              
 ```
 
 ---
