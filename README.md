@@ -150,7 +150,7 @@ genomic-nlp-curation/
 
 ---
 
-### 1. Entity Extraction (Hybrid Approach)
+### 1. Entity Extraction 
 
 #### A. Rule-Based Extraction (High Precision)
 
@@ -261,11 +261,11 @@ Augmented: "The APOE ε4 variant... VARIANTS: rs429358 GENES: APOE DISEASES: Alz
 
 ```json
 {
-  "id": "1",
-  "variants": ["rs429358", "rs7412"],
-  "genes": ["APOE", "BIN1", "CLU", "PICALM"],
-  "diseases": ["Alzheimer's disease", "late-onset AD"],
-  "raw_text": "The International Genomics of Alzheimer's Project..."
+  "id": "17",
+  "variants": ["rs13115400", "rs1393060", "rs316341"],
+  "genes": ["002", "004", "006", "009", "047",...]
+  "diseases": [],
+  "raw_text": "Cerebrospinal fluid (CSF) levels of amyloid-beta 42 (Abeta42)..."
 }
 ```
 
@@ -284,12 +284,12 @@ Augmented: "The APOE ε4 variant... VARIANTS: rs429358 GENES: APOE DISEASES: Alz
 
 ```json
 {
-  "text_id": "32",
-  "variant": "rs429358",
-  "gene": "APOE",
-  "phenotype": "Alzheimer's disease",
-  "relation": "increases risk of",
-  "evidence_span": "The APOE ε4 allele (rs429358) increases risk of..."
+  "text_id": "61",
+  "variant": "rs6701713",
+  "gene": "MEASURES",
+  "phenotype": "the Alzheimer Disease Genetics Consortium",
+  "relation": "associated with",
+  "evidence_span": ""IMPORTANCE: Because APOE locus variants contribute to risk of..."
 }
 ```
 
@@ -315,17 +315,17 @@ Augmented: "The APOE ε4 variant... VARIANTS: rs429358 GENES: APOE DISEASES: Alz
 
 ```json
 {
-  "id": "5",
-  "cluster": 5,
-  "umap_x": -2.34,
-  "umap_y": 1.87,
-  "has_relation": true,
-  "relation_count": 12,
-  "relation_types": ["associated with", "increases risk of"],
-  "variants": ["rs429358"],
-  "genes": ["APOE"],
-  "diseases": ["Alzheimer's disease"],
-  "text": "Alzheimer's disease (AD) is highly heritable..."
+    "id": "33",
+    "cluster": 2,
+    "umap_x": 3.9729130268096924,
+    "umap_y": 1.5105104446411133,
+    "has_relation": true,
+    "relation_count": 55,
+    "relation_types": ["associated with"],
+    "variants": ["rs10510109", "rs2421016", "rs4734295", "rs6982393", "rs7812465"],
+    "genes": ["AND", "BACKGROUND", "CONCLUSION", "DIAGRAM"...],
+    "diseases": ["International Genomics of Alzheimer's"],
+    "text": "BACKGROUND: Both type 2 diabetes (T2D) and Alzheimer's disease..."
 }
 ```
 
@@ -740,72 +740,5 @@ def extract_validated_genes(text):
 - Gene precision: 40% → 85% (+45%)
 
 ---
-
-### Medium Priority (Enhanced Accuracy)
-
-#### 4. Dependency Parsing for Relation Validation
-**Rationale**: Verify syntactic connections between entities
-
-**Example:**
-```python
-def validate_gene_disease_relation(doc, gene_span, disease_span):
-    """Check if gene and disease are connected via verb"""
-    
-    # Find the root verb connecting entities
-    connecting_verbs = []
-    for token in doc:
-        if token.pos_ == "VERB":
-            # Check if gene is in subject and disease in object
-            if (gene_span in [child.text for child in token.children] and
-                disease_span in [child.text for child in token.children]):
-                connecting_verbs.append(token.text)
-    
-    # Valid relation verbs
-    valid_verbs = {"associate", "increase", "reduce", "affect", "cause", "link"}
-    return any(v in valid_verbs for v in connecting_verbs)
-```
-
----
-
-#### 5. Confidence Scoring System
-**Rationale**: Prioritize curation efforts on high-confidence triplets
-
-**Scoring Factors:**
-| Factor | Weight | Criteria |
-|--------|--------|----------|
-| Entity validation | 0.3 | Gene in HGNC + Disease in UMLS |
-| Co-occurrence distance | 0.3 | Same sentence (1.0), same paragraph (0.5) |
-| Relation keyword presence | 0.2 | Explicit keyword match |
-| Sentence structure | 0.2 | Syntactic dependency validation |
-
-```python
-def calculate_confidence(triplet, doc):
-    score = 0.0
-    
-    # Entity validation (0.3)
-    if triplet['gene'] in hgnc_genes:
-        score += 0.15
-    if triplet['disease'] in umls_diseases:
-        score += 0.15
-    
-    # Co-occurrence (0.3)
-    if all_in_same_sentence(triplet):
-        score += 0.3
-    elif all_in_same_paragraph(triplet):
-        score += 0.15
-    
-    # Relation keyword (0.2)
-    if triplet['relation'] in triplet['evidence_span']:
-        score += 0.2
-    
-    # Syntactic validation (0.2)
-    if has_dependency_path(triplet, doc):
-        score += 0.2
-    
-    return score
-
-# Usage
-triplet['confidence'] = calculate_confidence(triplet, doc)
-# High confidence: score > 0.7
 # Medium: 0.4-0.7
 # Low: < 0
