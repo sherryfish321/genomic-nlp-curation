@@ -98,7 +98,7 @@ genomic-nlp-curation/
        │
        ▼
 ┌─────────────────────────────────┐
-│  PART 1: Data Loading & Prep   │
+│  PART 1: Data Loading & Prep    │
 │  - Load texts.csv               │
 │  - Validate columns             │
 │  - Calculate text statistics    │
