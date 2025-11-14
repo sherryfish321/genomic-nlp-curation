@@ -16,32 +16,22 @@
 6. [Results & Visualizations](#-results--visualizations)
 7. [Limitations & Error Analysis](#-limitations--error-analysis)
 8. [Next Steps](#-next-steps)
-9. [References](#-references)
 
 ---
 
-## 🎯 Overview
+## Overview
 
-This project implements an **automated NLP pipeline** for extracting structured genomic knowledge from unstructured scientific abstracts. The system:
-
-1. **Extracts entities**: Genetic variants (rsIDs), gene symbols, diseases/phenotypes
-2. **Detects relations**: Associations between variants, genes, and diseases
-3. **Groups texts**: Clusters documents into topics using semantic embeddings
+This project implements an automated NLP pipeline for extracting structured genomic knowledge from unstructured scientific abstracts.   
 
 ### Key Achievements
-- ✅ Processed **70 genomic abstracts** from NIAGADS Alzheimer's disease publications
-- ✅ Extracted **418 gene-variant-disease triplets**
-- ✅ Identified **9 distinct research topics** using UMAP + K-Means
-- ✅ Quantified extraction errors for future improvement
+- Processed **70 genomic abstracts** from NIAGADS Alzheimer's disease publications
+- Extracted **418 gene-variant-disease triplets**
+- Identified **9 distinct research topics** using UMAP + K-Means
+- Quantified extraction errors for future improvement
 
 ---
 
-## 🛠 Setup & Installation
-
-### Prerequisites
-- Python 3.8+
-- pip package manager
-- (Optional) Google Colab for GPU-accelerated embeddings
+## Setup & Installation
 
 ### Installation Steps
 
@@ -67,13 +57,6 @@ python main.py
 # Or use the Jupyter notebook
 jupyter notebook Genomic_Text_Curation_NLP.ipynb
 ```
-
-### Expected Runtime
-- Entity extraction: ~2 minutes
-- Embedding generation: ~3 minutes (CPU) / ~30 seconds (GPU)
-- Clustering & visualization: ~1 minute
-- **Total: ~6 minutes**
-
 ---
 
 ## 📁 Project Structure
