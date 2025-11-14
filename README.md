@@ -234,10 +234,10 @@ Augmented: "The APOE ε4 variant... VARIANTS: rs429358 GENES: APOE DISEASES: Alz
 #### Embedding Model
 - **Model**: `sentence-transformers/all-mpnet-base-v2`
 - **Dimensions**: 768
-- **Rationale**: Balance between quality and speed (CPU-friendly)
+- **Rationale**: Balance between quality and speed
 
 #### Dimensionality Reduction
-- **Algorithm**: UMAP (Uniform Manifold Approximation and Projection)
+- **Algorithm**: UMAP 
 - **Parameters**:
   - `n_neighbors=15`: Preserve local structure
   - `min_dist=0.1`: Allow tight clusters
@@ -246,7 +246,7 @@ Augmented: "The APOE ε4 variant... VARIANTS: rs429358 GENES: APOE DISEASES: Alz
 
 #### Clustering
 - **Algorithm**: K-Means
-- **K Selection**: Elbow method (largest inertia drop) → **k=9**
+- **K Selection**: Elbow method → **k=9**
 - **Feature Space**: Full 768-dimensional embeddings (not 2D UMAP)
 
 #### Topic Interpretation
@@ -255,7 +255,7 @@ Augmented: "The APOE ε4 variant... VARIANTS: rs429358 GENES: APOE DISEASES: Alz
 
 ---
 
-## 📊 Curation Schema
+## Curation Schema
 
 ### Entity Schema (`section2_hybrid_schema.json`)
 
@@ -263,7 +263,7 @@ Augmented: "The APOE ε4 variant... VARIANTS: rs429358 GENES: APOE DISEASES: Alz
 {
   "id": "17",
   "variants": ["rs13115400", "rs1393060", "rs316341"],
-  "genes": ["002", "004", "006", "009", "047",...]
+  "genes": ["002", "004", "006", "009", "047..."]
   "diseases": [],
   "raw_text": "Cerebrospinal fluid (CSF) levels of amyloid-beta 42 (Abeta42)..."
 }
@@ -289,7 +289,7 @@ Augmented: "The APOE ε4 variant... VARIANTS: rs429358 GENES: APOE DISEASES: Alz
   "gene": "MEASURES",
   "phenotype": "the Alzheimer Disease Genetics Consortium",
   "relation": "associated with",
-  "evidence_span": ""IMPORTANCE: Because APOE locus variants contribute to risk of..."
+  "evidence_span": "IMPORTANCE: Because APOE locus variants contribute to risk of..."
 }
 ```
 
@@ -306,7 +306,7 @@ Augmented: "The APOE ε4 variant... VARIANTS: rs429358 GENES: APOE DISEASES: Alz
 **Why This Schema Matters:**
 1. **Structured Knowledge**: Converts prose → machine-readable facts
 2. **Curation Ready**: Curators can verify each triplet independently
-3. **Database Integration**: Direct mapping to knowledge graphs (e.g., Neo4j)
+3. **Database Integration**: Direct mapping to knowledge graphs 
 4. **Provenance**: `evidence_span` enables fact-checking
 
 ---
@@ -323,7 +323,7 @@ Augmented: "The APOE ε4 variant... VARIANTS: rs429358 GENES: APOE DISEASES: Alz
     "relation_count": 55,
     "relation_types": ["associated with"],
     "variants": ["rs10510109", "rs2421016", "rs4734295", "rs6982393", "rs7812465"],
-    "genes": ["AND", "BACKGROUND", "CONCLUSION", "DIAGRAM"...],
+    "genes": ["AND", "BACKGROUND", "CONCLUSION", "DIAGRAM..."],
     "diseases": ["International Genomics of Alzheimer's"],
     "text": "BACKGROUND: Both type 2 diabetes (T2D) and Alzheimer's disease..."
 }
@@ -331,7 +331,7 @@ Augmented: "The APOE ε4 variant... VARIANTS: rs429358 GENES: APOE DISEASES: Alz
 
 ---
 
-## 📈 Results & Visualizations
+## Results & Visualizations
 
 ### Extraction Statistics
 
@@ -353,15 +353,20 @@ Augmented: "The APOE ε4 variant... VARIANTS: rs429358 GENES: APOE DISEASES: Alz
 
 | Cluster | Size | Top Keywords | Research Focus |
 |---------|------|--------------|----------------|
-| **0** | 7 | cancer, pap, snps, prostate | Cancer genetics & SNP associations |
-| **1** | 7 | csf, levels, amd, clu | Biomarker studies (CSF, blood) |
-| **2** | 13 | ad, load, genes, loci | Late-onset Alzheimer's GWAS |
+| **0** | 2 | cancer, pap, snps, prostate | Cancer genetics & SNP associations |
+| **1** | 9 | csf, levels, amd, clu | Biomarker studies (CSF, blood) |
+| **2** | 25 | ad, load, genes, loci | Late-onset Alzheimer's GWAS |
 | **3** | 4 | hs aging, aging, abcc9 | Hippocampal sclerosis & aging |
-| **4** | 5 | pd, ftd, mapt, als | Neurodegenerative diseases (PD/FTD) |
-| **5** | 10 | apoe, ad, load, age | APOE-focused Alzheimer's studies |
-| **6** | 6 | wmhv, white matter, fa | Brain imaging (white matter) |
-| **7** | 6 | intracranial volume, pi3k | Structural brain measures |
-| **8** | 12 | ad, bi, bmi, hdl | Metabolic factors in AD |
+| **4** | 4 | pd, ftd, mapt, als | Neurodegenerative diseases (PD/FTD) |
+| **5** | 18 | apoe, ad, load, age | APOE-focused Alzheimer's studies |
+| **6** | 1 | wmhv, white matter, fa | Brain imaging (white matter) |
+| **7** | 1 | intracranial volume, pi3k | Structural brain measures |
+| **8** | 6 | ad, bi, bmi, hdl | Metabolic factors in AD |
+
+**Key Observations:**
+- **Cluster 2** (Late-onset AD GWAS): Largest cluster with 25 texts (36% of corpus)
+- **Clusters 6 & 7**: Single-document clusters (outliers or highly specialized topics)
+- **Clusters 2 & 5**: Together represent 43 texts (61%) — core AD genetics research
 
 ---
 
@@ -374,9 +379,21 @@ Augmented: "The APOE ε4 variant... VARIANTS: rs429358 GENES: APOE DISEASES: Alz
 - **Spatial proximity**: Semantic similarity (closer = more related topics)
 
 **Key Observations:**
-1. **Cluster 2 & 5** (APOE studies) are spatially close → strong thematic overlap
-2. **Cluster 4** (PD/FTD) is distant from AD clusters → distinct research area
-3. **Cluster 3** (hippocampal sclerosis) is isolated → rare/specialized topic
+1. **Cluster 2 & 5** (35.7% + 25.7% = 61.4% of corpus): 
+   - Dominant Alzheimer's GWAS themes
+   - Cluster 2: Broad multi-loci studies
+   - Cluster 5: APOE-centric research
+   - Spatially adjacent → strong thematic overlap
+
+2. **Cluster 4** (PD/FTD, 5.7%): Distant from AD clusters → distinct research area
+
+3. **Clusters 6 & 7** (1.4% each): 
+   - Outlier documents (single text per cluster)
+   - Highly specialized or methodologically unique papers
+   - May benefit from manual review for potential mis-clustering
+
+4. **Cluster 0** (2.9%): Small cancer genetics cluster
+   - Possible cross-domain papers (cancer-AD comorbidity studies?)
 
 ---
 
@@ -574,42 +591,91 @@ Actual valid relations in text: ~3
 
 **Statistics:**
 - 70 texts ÷ 9 clusters = **7.8 texts/cluster** (avg)
-- Smallest cluster: 4 texts (Cluster 3)
-- Largest cluster: 13 texts (Cluster 2)
+- **Smallest clusters**: 1 text each (Clusters 6, 7) — 2.9% of corpus
+- **Largest cluster**: 25 texts (Cluster 2) — 35.7% of corpus
+- **Median cluster size**: 4 texts
 
-**Observations:**
+**Cluster Quality Assessment:**
 
-| Cluster Quality | Clusters | Issue |
-|----------------|----------|-------|
-| 🟢 **Well-Defined** | 2, 5 | Clear keyword consensus (APOE, GWAS) |
-| 🟡 **Moderate** | 0, 1, 8 | Mixed topics, needs manual inspection |
-| 🔴 **Sparse** | 3, 4 | <5 texts, keywords may not generalize |
+| Quality Tier | Clusters | Size Range | Issue |
+|--------------|----------|------------|-------|
+| 🟢 **Robust** | 2, 5 | 18-25 texts | Clear keyword consensus, sufficient data |
+| 🟡 **Moderate** | 1, 8 | 6-9 texts | Interpretable but small sample |
+| 🟠 **Sparse** | 0, 3, 4 | 2-4 texts | Keywords may not generalize |
+| 🔴 **Outliers** | 6, 7 | 1 text | Single-document "clusters" (not true topics) |
 
-**Limitation**: TF-IDF keywords are dataset-specific and may not apply to new documents
+**Critical Issue: Single-Document Clusters**
 
-**Evidence:**
+Clusters 6 and 7 each contain only **1 document**:
 ```python
-# Cluster 3 (Hippocampal Sclerosis)
-{
-  "size": 4,
-  "keywords": ["hs aging", "aging", "hs", "abcc9", "aging pathology"],
-  "documents": [19, 27, 43, 61]
-}
+# Evidence from actual data
+Cluster 6: 1 text  # "Brain imaging (white matter)"
+Cluster 7: 1 text  # "Structural brain measures"
 ```
-*With only 4 documents, keywords may be due to a single author's writing style.*
+
+**Why This Happens:**
+1. **K-Means Forces Assignment**: Even outliers must join a cluster
+2. **Unique Vocabulary**: These papers likely use distinct terminology
+3. **Potential Causes**:
+   - Different imaging modality from other brain studies
+   - Methods paper rather than association study
+   - Non-AD disease focus (e.g., stroke, MS)
+
+**Impact**: 🔴 **High** for these 2 clusters
+- Keywords are essentially just that document's vocabulary
+- No generalization possible
+- Should be manually reviewed for:
+  - Possible merge with Clusters 1 or 8 (if biomarker-related)
+  - Exclusion from corpus (if out of scope)
+
+**Imbalanced Distribution:**
+```
+Large clusters (>10 texts): 2, 5 → 43 texts (61%)
+Small clusters (<5 texts): 0, 3, 4, 6, 7 → 12 texts (17%)
+```
+
+This suggests the dataset has **2-3 dominant themes** (AD genetics) with several niche subtopics.
 
 **Next Steps:**
-1. **Bootstrap Validation**: Resample 70 texts with replacement 100 times, measure cluster stability
-   - Stable cluster: Same documents group together >80% of time
-   - Unstable cluster: Random grouping
 
-2. **Hierarchical Clustering**: Use dendrogram to validate k=9 choice
-   ```python
+1. **Optimal K Re-evaluation**: 
+```python
+   # Try k=5 (collapse small clusters)
+   silhouette_scores = []
+   for k in range(2, 11):
+       kmeans = KMeans(n_clusters=k, random_state=42)
+       labels = kmeans.fit_predict(embeddings)
+       score = silhouette_score(embeddings, labels)
+       silhouette_scores.append(score)
+   
+   # k=5 might be more appropriate for 70 texts
+```
+
+2. **Hierarchical Clustering**: Validate whether Clusters 6/7 are true outliers
+```python
    from scipy.cluster.hierarchy import dendrogram, linkage
    linkage_matrix = linkage(embeddings, method='ward')
-   ```
+   dendrogram(linkage_matrix)
+   # Check if docs in Clusters 6/7 have no close neighbors
+```
 
-3. **Collect More Data**: Ideal corpus size for 9 clusters: 180+ texts (20 per cluster)
+3. **Manual Review Required**: 
+   - Examine the single document in Cluster 6 and Cluster 7
+   - Determine if they're genuinely off-topic or just specialized
+
+4. **Alternative Approach**: Use **HDBSCAN** instead of K-Means
+   - Automatically detects outliers (assigns label -1)
+   - No forced assignment to arbitrary clusters
+```python
+   import hdbscan
+   clusterer = hdbscan.HDBSCAN(min_cluster_size=3)
+   labels = clusterer.fit_predict(embeddings)
+   # Outliers get label -1 instead of forming singleton clusters
+```
+
+5. **Collect More Data**: 
+   - Ideal corpus size for 9 stable clusters: **180+ texts** (20 per cluster)
+   - For 70 texts, **k=3-5** is more statistically sound
 
 ---
 
@@ -622,9 +688,22 @@ Actual valid relations in text: ~3
 | **Gene False Positives (numeric)** | 226 | 47% | 🔴 High | P1 |
 | **Disease False Negatives** | 49 | 70% | 🔴 Critical | P1 |
 | **Spurious Relations** | ~300 | 72% | 🔴 High | P2 |
-| **Unstable Clusters** | 2-3 | 22-33% | 🟡 Medium | P3 |
+| **Singleton Clusters** | 2 | 22% of clusters | 🔴 High | P2 |
+| **Sparse Clusters (<5 docs)** | 5 | 56% of clusters | 🟡 Medium | P3 |
 
 *Severity: 🔴 Critical = Blocks curation, 🟡 Medium = Adds manual work, 🟢 Low = Acceptable*
+
+### Cluster Size Distribution Analysis
+```
+Robust clusters (≥10 docs):     2 clusters → 43 texts (61%)
+Moderate clusters (5-9 docs):   2 clusters → 15 texts (21%)
+Sparse clusters (2-4 docs):     3 clusters → 10 texts (14%)
+Singleton clusters (1 doc):     2 clusters →  2 texts ( 3%)
+─────────────────────────────────────────────────────────
+Total:                          9 clusters → 70 texts
+```
+
+**Recommendation**: For a 70-text corpus, **k=4-5 clusters** would be more statistically robust than k=9.
 
 ---
 
