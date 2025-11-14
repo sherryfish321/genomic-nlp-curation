@@ -1,0 +1,110 @@
+{
+  "0": [
+    "cancer",
+    "pap",
+    "snps",
+    "ad cancer",
+    "prostate",
+    "cell",
+    "cell growth",
+    "suppressor",
+    "289",
+    "tumor suppressor"
+  ],
+  "1": [
+    "csf",
+    "levels",
+    "ad",
+    "amd",
+    "clu",
+    "prolactin",
+    "ccl16",
+    "tau",
+    "ykl",
+    "42"
+  ],
+  "2": [
+    "ad",
+    "load",
+    "genes",
+    "loci",
+    "gene",
+    "alzheimer",
+    "associated",
+    "risk",
+    "disease",
+    "genetic"
+  ],
+  "3": [
+    "hs aging",
+    "aging",
+    "hs",
+    "abcc9",
+    "aging pathology",
+    "memory",
+    "grn",
+    "center",
+    "tmem106b",
+    "pathology"
+  ],
+  "4": [
+    "pd",
+    "ftd",
+    "mapt",
+    "als",
+    "park10",
+    "ad pd",
+    "mean",
+    "rs393152",
+    "region",
+    "genetic overlap"
+  ],
+  "5": [
+    "apoe",
+    "ad",
+    "load",
+    "10",
+    "age",
+    "disease",
+    "alzheimer",
+    "sample",
+    "risk",
+    "mapt"
+  ],
+  "6": [
+    "wmhv",
+    "md",
+    "matter",
+    "white matter",
+    "fa",
+    "white",
+    "integrity",
+    "major",
+    "fa md",
+    "integrity white"
+  ],
+  "7": [
+    "intracranial",
+    "intracranial volume",
+    "volume",
+    "pi3k",
+    "akt",
+    "438",
+    "748",
+    "345",
+    "adult",
+    "loci"
+  ],
+  "8": [
+    "ad",
+    "bi",
+    "bmi",
+    "hdl",
+    "ssbi",
+    "10",
+    "fasting",
+    "associated",
+    "genetic",
+    "metabolic"
+  ]
+}
