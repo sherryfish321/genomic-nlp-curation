@@ -3,7 +3,7 @@
 **Author:** Yu-Hsuan Huang  
 **Duration:** 24 hours  
 **Primary Skills:** Natural Language Processing (NLP), Text Mining, Clustering, Data Structuring  
-**Cost:** Zero (standard Python packages only)
+**Cost:** Zero (standard Python packages only)  
 **Google Colab:** https://colab.research.google.com/drive/14KjIxj4EUK7rEINo3hnCRfwdcS8f-nJq?usp=sharing
 
 ---
