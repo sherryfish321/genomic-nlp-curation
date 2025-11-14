@@ -512,14 +512,15 @@ Actual valid relations in text: ~3
 **False Positive Example:**
 ```json
 {
-  "variant": "rs11136000",
-  "gene": "CLU",
-  "phenotype": "cognitive decline",
-  "relation": "associated with",
-  "evidence_span": "Full document text (no co-occurrence in any sentence)"
+    "text_id": 61,
+    "variant": "rs6701713",
+    "gene": "LOAD",
+    "phenotype": "the Alzheimer Disease Genetics Consortium",
+    "relation": "associated with",
+    "evidence_span": "IMPORTANCE: Because APOE locus variants contribute to risk of late-onset Alzheimer disease (LOAD)"
 }
 ```
-*These entities never appear together in a single sentence.*
+*The extracted record for text_id 61 is a clear false positive. The gene field incorrectly identifies LOAD, which is a disease rather than a gene, and the phenotype field incorrectly captures the Alzheimer Disease Genetics Consortium, which is an organization name rather than a clinical phenotype.*
 
 **Current Mitigation:**
 - `get_evidence_span()` finds supporting sentences
