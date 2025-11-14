@@ -8,7 +8,7 @@
 ---
 
 ## 📋 Table of Contents
-1. [Overview](#-overview)
+1. [Overview](#overview)
 2. [Setup & Installation](#-setup--installation)
 3. [Project Structure](#-project-structure)
 4. [Methods & Pipeline](#-methods--pipeline)
