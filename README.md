@@ -9,13 +9,12 @@
 
 ## 📋 Table of Contents
 1. [Overview](#overview)
-2. [Setup & Installation](#-setup--installation)
-3. [Project Structure](#-project-structure)
-4. [Methods & Pipeline](#-methods--pipeline)
-5. [Curation Schema](#-curation-schema)
-6. [Results & Visualizations](#-results--visualizations)
-7. [Limitations & Error Analysis](#-limitations--error-analysis)
-8. [Next Steps](#-next-steps)
+2. [Setup & Installation](#setup--installation)
+3. [Project Structure](#project-structure)
+4. [Methods & Pipeline](#methods--pipeline)
+5. [Curation Schema](#curation-schema)
+6. [Results & Visualizations](#results--visualizations)
+7. [Limitations & Error Analysis](#limitations--error-analysis)
 
 ---
 
