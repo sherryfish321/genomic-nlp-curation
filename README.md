@@ -364,9 +364,9 @@ Augmented: "The APOE ε4 variant... VARIANTS: rs429358 GENES: APOE DISEASES: Alz
 | **8** | 6 | ad, bi, bmi, hdl | Metabolic factors in AD |
 
 **Key Observations:**
-- **Cluster 2** (Late-onset AD GWAS): Largest cluster with 25 texts (36% of corpus)
-- **Clusters 6 & 7**: Single-document clusters (outliers or highly specialized topics)
-- **Clusters 2 & 5**: Together represent 43 texts (61%) — core AD genetics research
+- **Cluster 2** (Late-onset AD GWAS): Largest cluster with 25 texts 
+- **Clusters 6 & 7**: Single-document clusters 
+- **Clusters 2 & 5**: Together represent 43 texts (61%) 
 
 ---
 
@@ -374,9 +374,9 @@ Augmented: "The APOE ε4 variant... VARIANTS: rs429358 GENES: APOE DISEASES: Alz
 ![UMAP Clusters](figures/umap_clusters.png)
 
 **Interpretation:**
-- **Larger dots**: Documents with extracted gene-variant-disease relations (curatable)
+- **Larger dots**: Documents with extracted gene-variant-disease relations 
 - **Color**: Cluster assignment
-- **Spatial proximity**: Semantic similarity (closer = more related topics)
+- **Spatial proximity**: Semantic similarity 
 
 **Key Observations:**
 1. **Cluster 2 & 5** (35.7% + 25.7% = 61.4% of corpus): 
@@ -388,12 +388,12 @@ Augmented: "The APOE ε4 variant... VARIANTS: rs429358 GENES: APOE DISEASES: Alz
 2. **Cluster 4** (PD/FTD, 5.7%): Distant from AD clusters → distinct research area
 
 3. **Clusters 6 & 7** (1.4% each): 
-   - Outlier documents (single text per cluster)
+   - Outlier documents
    - Highly specialized or methodologically unique papers
    - May benefit from manual review for potential mis-clustering
 
 4. **Cluster 0** (2.9%): Small cancer genetics cluster
-   - Possible cross-domain papers (cancer-AD comorbidity studies?)
+   - Possible cross-domain papers
 
 ---
 
@@ -403,15 +403,15 @@ Augmented: "The APOE ε4 variant... VARIANTS: rs429358 GENES: APOE DISEASES: Alz
 **Insights:**
 - **Cluster 2**: Highest gene count (large-scale GWAS)
 - **Cluster 5**: Balanced variant/gene/disease (well-structured abstracts)
-- **Cluster 3 & 4**: Low entity counts (narrative/review-style texts)
+- **Cluster 3 & 4**: Low entity counts (narrative texts)
 
 ---
 
-## 🔍 Limitations & Error Analysis
+## Limitations & Error Analysis
 
 ### 1. Entity Extraction Challenges
 
-#### ❌ Variant Detection (False Negative Rate: 50%)
+#### Variant Detection (False Negative Rate: 50%)
 
 **Issue**: 35/70 texts lack extracted variants
 
@@ -420,8 +420,6 @@ Augmented: "The APOE ε4 variant... VARIANTS: rs429358 GENES: APOE DISEASES: Alz
    - *Example*: "Pathway analysis reveals novel AD mechanisms..."
 2. **Alternative Notations**: Non-rsID variants not captured
    - *Missed*: `chr19:45411941`, `APOE ε4 allele`
-
-**Impact**: 🟡 **Moderate** — Acceptable for exploratory analysis, but limits relation extraction
 
 **Evidence from Error Analysis:**
 ```json
@@ -436,7 +434,7 @@ Augmented: "The APOE ε4 variant... VARIANTS: rs429358 GENES: APOE DISEASES: Alz
 
 ---
 
-#### ❌ Gene Symbol False Positives (Rate: ~60%)
+#### Gene Symbol False Positives (Rate: ~60%)
 
 **Issue**: 287 short tokens + 226 numeric tokens incorrectly labeled as genes
 
@@ -446,10 +444,6 @@ Augmented: "The APOE ε4 variant... VARIANTS: rs429358 GENES: APOE DISEASES: Alz
 | **Abbreviations** | AD (Alzheimer's Disease), PD (Parkinson's), OR (Odds Ratio) | 287 |
 | **Numbers** | 10, 437, 6559 (likely sample sizes or p-values) | 226 |
 | **Acronyms** | USA, COVID (caught by blacklist), FDR (False Discovery Rate) | ~50 |
-
-**Root Cause**: Naive regex `[A-Z0-9]{3,10}` has no biological context validation
-
-**Impact**: 🔴 **High** — Requires manual curation to remove ~50% of "genes"
 
 **Evidence from Code:**
 ```python
@@ -466,15 +460,11 @@ Augmented: "The APOE ε4 variant... VARIANTS: rs429358 GENES: APOE DISEASES: Alz
    valid_symbols = {g['symbol'] for g in hgnc_genes['response']['docs']}
    ```
 
-2. **Context-Aware Filtering**:
-   - Reject if preceded by: "year", "day", "patients", "n="
-   - Require at least one occurrence with gene-like context: "gene", "protein", "locus"
-
-3. **Use Biomedical NER**: scispaCy's `en_ner_bionlp13cg_md` has 67% precision on gene entities
+2. **Use Biomedical NER**: scispaCy's `en_ner_bionlp13cg_md` has 67% precision on gene entities
 
 ---
 
-#### ❌ Disease/Phenotype Recall (False Negative Rate: 70%)
+#### Disease/Phenotype Recall (False Negative Rate: 70%)
 
 **Issue**: 49/70 texts fail to extract any disease entities
 
@@ -485,14 +475,10 @@ Augmented: "The APOE ε4 variant... VARIANTS: rs429358 GENES: APOE DISEASES: Alz
 | "cognitive decline" | Phenotype, not standard disease label | 11 |
 | "hippocampal sclerosis of aging" | Multi-word biomedical term | 19 |
 
-**Root Cause**: spaCy's general-purpose model (`en_core_web_sm`) is not trained on biomedical text
-
-**Impact**: 🔴 **Critical** — Limits relation extraction to 30% of corpus
-
 **Evidence:**
 ```json
 {
-  "disease_fn_count": 49  // 70% of documents
+  "disease_fn_count": 49  
 }
 ```
 
@@ -504,22 +490,11 @@ Augmented: "The APOE ε4 variant... VARIANTS: rs429358 GENES: APOE DISEASES: Alz
    pip install https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.1/en_ner_bc5cdr_md-0.5.1.tar.gz
    ```
 
-2. **Pattern-Based Fallback**: Add regex for common patterns
-   ```python
-   DISEASE_PATTERNS = [
-       r"\b\w+\'s disease\b",  # Alzheimer's, Parkinson's
-       r"\b\w+ syndrome\b",     # Down syndrome
-       r"\bcognitive \w+\b"     # cognitive decline, impairment
-   ]
-   ```
-
-3. **Biomedical Entity Linker**: Normalize to UMLS/SNOMED codes for consistency
-
 ---
 
 ### 2. Relation Extraction Over-Generation
 
-#### ❌ Triplet Explosion (418 relations from 70 texts)
+#### Triplet Explosion (418 relations from 70 texts)
 
 **Issue**: Cartesian product generates spurious associations
 
@@ -546,15 +521,13 @@ Actual valid relations in text: ~3
 ```
 *These entities never appear together in a single sentence.*
 
-**Impact**: 🔴 **High** — ~72% of triplets are likely false (estimated 300/418)
-
 **Current Mitigation:**
 - `get_evidence_span()` finds supporting sentences
 - But still generates relations when entities are in *different* sentences
 
 **Next Steps:**
 
-1. **Sentence-Level Co-Occurrence Filter** (Immediate win):
+1. **Sentence-Level Co-Occurrence Filter**:
    ```python
    def validate_triplet(text, variant, gene, disease):
        doc = nlp(text)
@@ -565,23 +538,6 @@ Actual valid relations in text: ~3
    
    # Expected reduction: 418 → ~120 triplets (-71%)
    ```
-
-2. **Dependency Parsing Validation** (Medium effort):
-   ```python
-   def check_syntactic_relation(doc, variant, gene, disease):
-       # Find entity spans
-       var_span = find_entity_span(doc, variant)
-       gene_span = find_entity_span(doc, gene)
-       
-       # Check if connected by verb or preposition
-       if has_dependency_path(var_span, gene_span, max_distance=5):
-           return True
-       return False
-   ```
-
-3. **Relation Extraction Classifier** (Requires labeled data):
-   - Fine-tune BioBERT on PubMed relation extraction datasets
-   - Expected precision: ~85% (vs current ~28%)
 
 ---
 
@@ -594,15 +550,6 @@ Actual valid relations in text: ~3
 - **Smallest clusters**: 1 text each (Clusters 6, 7) — 2.9% of corpus
 - **Largest cluster**: 25 texts (Cluster 2) — 35.7% of corpus
 - **Median cluster size**: 4 texts
-
-**Cluster Quality Assessment:**
-
-| Quality Tier | Clusters | Size Range | Issue |
-|--------------|----------|------------|-------|
-| 🟢 **Robust** | 2, 5 | 18-25 texts | Clear keyword consensus, sufficient data |
-| 🟡 **Moderate** | 1, 8 | 6-9 texts | Interpretable but small sample |
-| 🟠 **Sparse** | 0, 3, 4 | 2-4 texts | Keywords may not generalize |
-| 🔴 **Outliers** | 6, 7 | 1 text | Single-document "clusters" (not true topics) |
 
 **Critical Issue: Single-Document Clusters**
 
@@ -621,7 +568,7 @@ Cluster 7: 1 text  # "Structural brain measures"
    - Methods paper rather than association study
    - Non-AD disease focus (e.g., stroke, MS)
 
-**Impact**: 🔴 **High** for these 2 clusters
+**Impact**: for these 2 clusters
 - Keywords are essentially just that document's vocabulary
 - No generalization possible
 - Should be manually reviewed for:
@@ -651,173 +598,11 @@ This suggests the dataset has **2-3 dominant themes** (AD genetics) with several
    # k=5 might be more appropriate for 70 texts
 ```
 
-2. **Hierarchical Clustering**: Validate whether Clusters 6/7 are true outliers
-```python
-   from scipy.cluster.hierarchy import dendrogram, linkage
-   linkage_matrix = linkage(embeddings, method='ward')
-   dendrogram(linkage_matrix)
-   # Check if docs in Clusters 6/7 have no close neighbors
-```
-
-3. **Manual Review Required**: 
+2. **Manual Review Required**: 
    - Examine the single document in Cluster 6 and Cluster 7
    - Determine if they're genuinely off-topic or just specialized
 
-4. **Alternative Approach**: Use **HDBSCAN** instead of K-Means
-   - Automatically detects outliers (assigns label -1)
-   - No forced assignment to arbitrary clusters
-```python
-   import hdbscan
-   clusterer = hdbscan.HDBSCAN(min_cluster_size=3)
-   labels = clusterer.fit_predict(embeddings)
-   # Outliers get label -1 instead of forming singleton clusters
-```
-
-5. **Collect More Data**: 
+3. **Collect More Data**: 
    - Ideal corpus size for 9 stable clusters: **180+ texts** (20 per cluster)
    - For 70 texts, **k=3-5** is more statistically sound
 
----
-
-## 📊 Quantitative Error Summary
-
-| Error Type | Count | Rate | Severity | Priority |
-|------------|-------|------|----------|----------|
-| **Variant False Negatives** | 35 | 50% | 🟡 Medium | P3 |
-| **Gene False Positives (short)** | 287 | 60% | 🔴 High | P1 |
-| **Gene False Positives (numeric)** | 226 | 47% | 🔴 High | P1 |
-| **Disease False Negatives** | 49 | 70% | 🔴 Critical | P1 |
-| **Spurious Relations** | ~300 | 72% | 🔴 High | P2 |
-| **Singleton Clusters** | 2 | 22% of clusters | 🔴 High | P2 |
-| **Sparse Clusters (<5 docs)** | 5 | 56% of clusters | 🟡 Medium | P3 |
-
-*Severity: 🔴 Critical = Blocks curation, 🟡 Medium = Adds manual work, 🟢 Low = Acceptable*
-
-### Cluster Size Distribution Analysis
-```
-Robust clusters (≥10 docs):     2 clusters → 43 texts (61%)
-Moderate clusters (5-9 docs):   2 clusters → 15 texts (21%)
-Sparse clusters (2-4 docs):     3 clusters → 10 texts (14%)
-Singleton clusters (1 doc):     2 clusters →  2 texts ( 3%)
-─────────────────────────────────────────────────────────
-Total:                          9 clusters → 70 texts
-```
-
-**Recommendation**: For a 70-text corpus, **k=4-5 clusters** would be more statistically robust than k=9.
-
----
-
-## 🚀 Next Steps
-
-### High Priority (Immediate Impact)
-
-#### 1. Replace spaCy with scispaCy
-**Rationale**: Biomedical-specific NER model trained on PubMed/PMC abstracts
-
-**Implementation:**
-```bash
-pip install scispacy
-pip install https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.1/en_ner_bc5cdr_md-0.5.1.tar.gz
-```
-
-```python
-import scispacy
-import spacy
-
-nlp = spacy.load("en_ner_bc5cdr_md")
-doc = nlp(text)
-
-# Extract diseases
-diseases = [ent.text for ent in doc.ents if ent.label_ == "DISEASE"]
-```
-
-**Expected Improvement:**
-- Disease recall: 30% → 70% (+40%)
-- Gene precision: 40% → 60% (+20%)
-
----
-
-#### 2. Add Sentence-Level Relation Filtering
-**Rationale**: Eliminate 70% of spurious triplets with minimal code change
-
-**Implementation:**
-```python
-def extract_valid_triplets(text, variants, genes, diseases):
-    doc = nlp(text)
-    valid_triplets = []
-    
-    for sent in doc.sents:
-        sent_text = sent.text
-        
-        # Find entities co-occurring in this sentence
-        sent_variants = [v for v in variants if v in sent_text]
-        sent_genes = [g for g in genes if g in sent_text]
-        sent_diseases = [d for d in diseases if d in sent_text]
-        
-        # Only create triplets from same-sentence entities
-        for v in sent_variants:
-            for g in sent_genes:
-                for d in sent_diseases:
-                    valid_triplets.append({
-                        "variant": v,
-                        "gene": g,
-                        "disease": d,
-                        "evidence_span": sent_text
-                    })
-    
-    return valid_triplets
-```
-
-**Expected Improvement:**
-- Triplet count: 418 → ~120 (-71%)
-- Precision: 28% → 75% (+47%)
-
----
-
-#### 3. Gene Symbol Validation via HGNC Dictionary
-**Rationale**: Eliminate numeric and abbreviation false positives
-
-**Implementation:**
-```python
-import requests
-import json
-
-# Download official gene symbols (one-time)
-def load_hgnc_genes():
-    url = "https://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/json/hgnc_complete_set.json"
-    response = requests.get(url)
-    data = response.json()
-    
-    valid_symbols = set()
-    for gene in data['response']['docs']:
-        valid_symbols.add(gene['symbol'])
-        # Also add aliases
-        if 'alias_symbol' in gene:
-            valid_symbols.update(gene['alias_symbol'])
-    
-    return valid_symbols
-
-# Validate extracted genes
-hgnc_genes = load_hgnc_genes()
-
-def extract_validated_genes(text):
-    candidates = re.findall(GENE_PATTERN, text)
-    blacklist = {"DNA", "RNA", "USA", "COVID", "GWAS", "OR", "CI", "HR"}
-    
-    validated = []
-    for gene in candidates:
-        if gene in blacklist:
-            continue
-        if gene in hgnc_genes:
-            validated.append(gene)
-    
-    return validated
-```
-
-**Expected Improvement:**
-- Gene false positives: 513 → ~50 (-90%)
-- Gene precision: 40% → 85% (+45%)
-
----
-# Medium: 0.4-0.7
-# Low: < 0
