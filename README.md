@@ -86,7 +86,7 @@ genomic-nlp-curation/
 
 ---
 
-## 🔬 Methods & Pipeline
+## Methods & Pipeline
 
 ### Architecture Overview
 
